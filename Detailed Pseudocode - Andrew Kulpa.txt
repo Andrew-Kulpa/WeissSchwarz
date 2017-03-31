@@ -1,0 +1,399 @@
+# Detailed Pseudocode - Andrew Kulpa
+# Lab 6 - Weiss Schwarz.
+------------------------------------------
+# Pseudocode for the game WeissSchwarz. Each class has been detailed with comments
+# for descriptions of classes and methods. Also, each method has pseudocode indented after each short description.
+
+------------------------------------------
+# A Model representing a player.
+class Player
+	# Vars
+	Public List PlayerInfo
+	Public Board_Area PlayerBoard
+	# Methods
+	Protected Card[] getHand(Hand):
+		# Retrieve the players hand
+		# Done by referrencing the player's hand object
+		# Checking that the hand is owned by the player
+		# Returning visibility of it to the View (GameSystem --> GamePage)
+	end
+	Protected void SetBoardArea(Board_Area Board)
+		# Sets the players board that is to be referenced later.
+			# PlayerBoard = Board
+	end
+
+end
+
+# The Controller
+class GameSystem
+	# Vars
+		Public Player[2]
+		Public Board_Area[2] PlayerBoards
+		Public int CurrentTurn
+		Public Player CurrentActivePlayer
+	# Methods
+		Protected void GeneratePlayers(void):
+			# Initialize two players for the game.
+				# Check and set referrences to each player's respective decks
+				# Generate these decks
+				# Shuffle the decks
+				# Initialize their first hand
+		end
+		Protected void GeneratePlayerBoards(void):
+			# Create each players board, and pass the respective boards and their sides
+			# to the GamePage(View)
+				# Initialize two board areas
+				# Call SetBoardArea on each player
+				# Set their board to that board_area
+		end
+		Protected void GetPlayerLevels(void):
+			# Check that each player has not reached above level 4
+				# If player1 > 4, then player 2 wins
+				# If player2 > 4, then player 1 wins
+		end
+		Protected void InitializeGame(void):
+			# Calls necessary functions for the game to properly be initialized.
+				# Call GeneratePlayers()
+				# Call GeneratePlayerBoards()
+				# Create GamePage as new GamePage
+				# Set GamePage Labels for hands, decks, and Game_Board_Area's
+				# Set GamePage Buttons for menus and starting turn actions.
+		end
+		Public void ReturnPlayerAvailableActions(void):
+			# Setup labels for the current player context, such that their
+			# current available moves are apparent and visible.
+				# Check the current game state
+					# Use GameState as an incremental state referrence
+					# If draw phase, GameState = 0, if clock phase, GameState = 1, etc.
+				# Check current card positions
+				# Set labels and buttons on GamePage
+		end
+end
+
+# The View for the game(GUI)
+class GamePage extends JFrame
+	# Vars
+		Public Button[20] InterfaceButtons
+		Public Label[30] InterfaceLabels
+	# Methods
+		Public void GetPlayerAvailableActions(void):
+			# Call the GameSystem and get available actions.
+				# this.GameSystem.ReturnPlayerAvailableActions
+		end
+		Public void OpenStartMenu(void):
+			# Create a start menu and then switch control to that.
+				# Create start menu
+				# set this not visible
+				# set start menu visible
+		end
+		Public void Restart(void):
+			# Restart the current game
+				# create a new GameSystem
+				# set this to not visible
+		end
+		Public void Exit(void):
+			# Exit the game
+				# set this to not visible
+				# properly exit the program
+		end
+		Public void OpenInstructions(void):
+			# allow player to view the instructions
+				# create instructionsPage
+				# set instructionsPage to visible
+		end
+		Protected void ChangeActivePlayer(void):
+			# Switch around the gameBoard such that the current player
+			# context properly shows the current player's hand and everything.
+			# if AI, simply switch but show placeholder hand cards
+				# Swap gameboard spots
+				# Readjust card and button positioning
+				# if AI, set hand to placeholder card labels
+				# if player 2 or 1, set hand to visible
+				# show temporary label showing "beginning #{Player_name} draw phase"
+				# Switch control back to user 
+		end
+		Public void OpenWinPage(void):
+			# Show the win page
+				# create winPage
+				# set this to not visible
+				# set winPage to visible
+		end
+end
+
+class InstructionsPage extends JFrame
+	# Vars
+		Public Button[5] Interfacebuttons
+		Public label InterfaceBackground
+	# Methods
+		Public void DisplayInstructions(void):
+			# Display the instructions
+				# pull instructions rtf from source files
+				# inject instructions into text boxes
+				# show current instructions
+		end
+		Public void Exit(void):
+			# exit the page
+				# set this to not visible
+		end
+end
+
+class StartMenu extends JFrame
+	# Vars
+		Public Button[10] Interfacebuttons
+		Public label[20] InterfaceLabels
+	# Methods
+		Public void Start(void):
+			# Start a new game
+				# create a new GameSystem
+				# set this to not visible
+		end
+		Public void Exit(void):
+			# Exit the game
+				# set this to not visible
+				# properly exit the program
+		end
+		Public void OpenInstructions(void):
+			# allow player to view the instructions
+				# create instructionsPage
+				# set instructionsPage to visible
+		end
+end
+
+class WinPage extends JFrame
+	# Vars
+		Public Button[5] Interfacebuttons
+		Public label[3] InterfaceLabels
+	# Methods
+		Public void OpenStartMenu(void):
+			# allow player to create a newly initialized game
+				# create startPage
+				# set startPage to visible
+		end
+		Public void Exit(void):
+			# Exit the game
+				# set this to not visible
+				# properly exit the program
+		end
+		Public void Restart(void):
+			# Restart the current game
+				# create a new GameSystem
+				# set this to not visible
+		end
+end
+
+class Hand
+	# Vars
+		Private CardList PlayerHand
+		Private int HandTotal
+	# Methods
+		Public Card DrawCard(Deck):
+			# get new card and put it into the hand
+				# pop card from deck
+				# push new card to hand
+		end
+		Public void RemoveCard(Card):
+			# pop card from hand
+			# place card at respective position
+		end
+		Public Card[] MullAgain(void):
+			# perform a mull again
+				# pop cards
+				# push cards to waiting room
+				# pop same amount of cards from deck
+				# push same amount of cards to hand
+		end
+		Public CardList GetPlayerHand(Player player):
+			# return the players hand
+				# for each card in players hand
+					# push card to cardlist
+				# return cardlist as a temp copy of the players hand
+		end
+end
+
+class Stock
+	# Vars
+		Public int Amount
+		Private CardList StockCards
+	# Methods
+		Protected Card PopCard(Card CardList[0]):
+			# remove and return top card in Stock
+				# pop card from StockCards
+				# push card to waiting room
+		end
+end
+
+class Level
+	# Vars
+		Protected int CurrentLevel
+		Protected CardList LevelTokenCards
+	# Methods
+		Protected int IncrementLevel():
+			# add one to CurrentLevel
+				# CurrentLevel++
+				# call clock.levelUp(card)
+		end
+		Public List CardColors(void):
+			# Return a unique list of card colors in LevelTokenCards
+				# initialize cardColorsList
+				# Iterate through level cards
+				# add unique colors to cardColorsList
+				# return this list
+		end
+end
+
+class Clock
+	# Vars
+		Protected CardList ClockCards
+		Public int Amount
+	# Methods
+		Public void CheckAmount(CardList cards):
+			# get the amount fo cards currently in ClockCards
+				# return ClockCards.size
+		end
+		Protected void LevelUp(Card selectedCard):
+			# perform the levelup action
+				# push selectedCard to level
+				# push remaining cards to waitingRoom
+		end
+		Public List CardColors():
+			# Return a unique list of card colors in LevelTokenCards
+				# initialize cardColorsList
+				# Iterate through levle cards
+				# add unique colors to cardColorsList
+				# return this list
+		end
+end
+
+class Deck
+	# Vars
+		Private CardList DeckCardList
+	# Methods
+		Protected Card PopCard(Card card):
+			# remove and return the top card in the deck
+				# Remove DeckCardList[0]
+				# Return this card
+		end
+		Protected void Refresh(Cardlist WRCards):
+			# perform the "refresh" of waiting room cards into the deck
+				# Shuffle WRCards
+				# DeckCardList = WRCards
+		end
+end
+
+class WaitingRoom
+	# Vars
+		Protected CardList WRCards
+	# Methods
+		Protected void PushCard(Card card):
+			# put a new card into the waiting room
+				# WRCards.push(card)
+		end
+end
+
+class ClimaxArea
+	# Vars
+		Protected int ClimaxCardAmount
+		Protected Card CurrentCard
+	# Methods
+		Protected void PerformCardEffect(Card card):
+			# buff cards affected by card
+				# do so by referencing encoding of card
+				# get card.SoulDamage
+				# Add this amount to each attackCharacterCard SoulDamage
+			# Other card effects will be added upon revision (not critical to playability.)
+		end
+end
+
+class FrontCharacterArea
+	# Vars
+		Public int AreaCardAmount
+		Public CardList CurrentCards
+	# Methods
+		Protected void PerformAttack(CardList[2] CurrentCards):
+			# perform an action to be taken place in the Attack Phase
+				# CurrentCards[0] attacks CurrentCards[1]
+					# Check if card 0 is stronger than card 1
+						# if so, card 1 is destroyed
+							# remove card 1 and put in other player's WR
+						# if weaker, card 0 is destroyed
+							# remove card 0 and put in current player's WR
+						# if both equal, both set to sideways position
+							# change each card's CurrentPosition
+		end
+end
+
+
+class BackCharacterArea
+	# Vars
+		Public int AreaCardAmount
+		Public CardList CurrentCards
+	# Methods
+		Protected void BuffCharacterCards():
+			# do so by referencing encoding of card
+				# get card.SoulDamage
+				# Add this amount to each attackCharacterCard SoulDamage
+		end
+end
+
+class Card
+	# Vars
+		Private int CardValue
+		Private String CardType
+		Private int Level
+		Private String Icon
+		Private String CurrentPosition
+	# Methods
+		Public int getCardValue():
+			# Return CardValue
+		end
+		Public String getCardType():
+			# Return CardType
+		end
+		Public String getCurrentPosition():
+			# Return CurrentPosition
+		end
+		Public int getLevel():
+			# Return Level
+		end
+		Public int getIcon():
+			# Return Icon
+		end
+end
+
+class ClimaxCard extends Card
+	# Vars 
+		Public String CardEffect
+		Public int BuffValue
+	# Methods
+		Public void PerformEffect():
+			# Return BuffValue
+			# Other buffs will be considered later. For now, simply buffs of additional SoulDamage are to be implemented
+		end
+end
+
+class AttackCharacterCard extends Card
+	# Vars 
+		Public int SoulDamage
+	# Methods
+		Public int Attack(Card defender):
+			# Return a tertiary value of -1, 0, and 1 on whether the character won the attack.
+				# -1 = lost
+				# 0 = equal
+				# 1 = won
+		end
+		Public void ChangePosition(String Position):
+			# set currentPosition to Position
+		end
+end
+
+class SupportCharacterCard extends Card
+	# Vars 
+		Public int SoulDamage
+	# Methods
+		Public void BuffCards(CardList[] Buffed):
+			# for each card in buffed
+				# getCardValue
+				# add SoulDamage to cardValue
+				# set card CardValue to newly calculated cardValue
+		end
+end
