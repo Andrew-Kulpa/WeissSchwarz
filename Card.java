@@ -16,9 +16,12 @@ public class Card {
   	private String icon;
   	private String currentPosition;
     
-    public Card (int faceValue, String suit){
-        this.faceValue = faceValue;
-        this.suit = suit;
+    public Card (int cardValue, String cardType, int level, String icon, String currentPosition){
+        this.cardValue = cardValue;
+        this.cardType = cardType;
+	this.level = level;
+	this.icon = icon;
+	this.currentPosition = currentPosition;
     }
     
     public int getCardValue(){
