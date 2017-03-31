@@ -44,11 +44,11 @@ public class Card {
 		return this.icon;
     }
     
-  	/*
+  
     public String toString(){
-        return this.suit + " :: " + this.faceValue;
+        return this.cardType + " :: " + this.cardValue;
     }
-    
+    	/*
     public String getImage(){
         String imageName = "";
         if(this.faceValue < 11 && this.faceValue > 1){
