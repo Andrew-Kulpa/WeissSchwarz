@@ -13,8 +13,8 @@ public class Card {
     private int cardValue;
     private String cardType;
     private int level;
-  	private String icon;
-  	private String currentPosition;
+    private String icon;
+    private String currentPosition;
     
     public Card (int cardValue, String cardType, int level, String icon, String currentPosition){
         this.cardValue = cardValue;
@@ -36,17 +36,22 @@ public class Card {
 		return this.level;
     }
   	
-  	public String getCurrentPosition(){
+    public String getCurrentPosition(){
         return this.currentPosition;
     }
   	
-    public int getIcon(){
-		return this.icon;
+    public String getIcon(){
+	return this.icon;
     }
     
   
     public String toString(){
-        return this.cardType + " :: " + this.cardValue;
+        //return this.cardType + " :: " + this.cardValue;
+        
+        // For now, toString will only return on placeHolder card value, as
+        // no cards have been coded into the game yet.
+        
+        return "/Images/placeholder_card_asset.jpg";
     }
     	/*
     public String getImage(){
